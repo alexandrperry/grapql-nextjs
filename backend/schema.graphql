@@ -1,0 +1,78 @@
+type Me {
+  name: String!
+  age: Int
+}
+
+type Info {
+  status: Boolean!
+  message: String
+}
+
+
+
+type Query {
+  user: User
+  posts(authorId: ID): [Post]
+  post(id: ID!): Post! 
+}
+
+type Mutation {
+  signup(email: String! name: String password: String! permission: Permission): User
+  signin(email: String! password: String!): User
+  signout: Info
+  addPost(authorId: ID! title: String! body: String! image: String!): Post!
+  addComment(articleId: ID! body: String!) : Comment!
+}
+
+type Subscription {
+  post: PostSubscriptionPayload
+}
+
+enum Permission {
+  ADMIN
+  USER
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String
+  password: String!
+  permission: Permission!
+}
+
+type Post {
+  id: ID!
+  authorId: ID!
+  title: String!
+  body: String!
+  image: String!
+  date: Float!
+  comments: [Comment]
+  likes: [Like]
+}
+
+type Comment {
+  id: ID!
+  authorId: ID!
+  articleId: ID!
+  body: String!
+  date: Int!
+}
+
+type Like {
+  id: ID!
+  authorId: ID!
+  articleId: ID!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+type PostSubscriptionPayload {
+  mutation: MutationType!
+  data: Post!
+}
